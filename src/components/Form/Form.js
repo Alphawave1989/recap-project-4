@@ -1,13 +1,14 @@
 import "./Form.css";
 
-export default function Form() {
+export default function Form({ onAddActivity }) {
   function handleSubmit(event) {
     event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-
-    return data;
+    const data = {
+      name: event.target.name.value,
+      goodWeather: event.target.goodWeather.checked,
+    };
+    onAddActivity(data);
+    event.target.reset();
   }
   return (
     <form className="form" aria-label="activity-form" onSubmit={handleSubmit}>
