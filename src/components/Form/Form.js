@@ -9,6 +9,7 @@ export default function Form({ onAddActivity }) {
     };
     onAddActivity(data);
     event.target.reset();
+    event.target.name.focus();
   }
   return (
     <form className="form" aria-label="activity-form" onSubmit={handleSubmit}>
