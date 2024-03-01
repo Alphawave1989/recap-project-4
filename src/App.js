@@ -8,7 +8,7 @@ function App() {
     defaultValue: [{ id: 2, name: "testName", goodWeather: true }],
   });
   function handleAddActivity(data) {
-    setActivities([{ id: uid(), ...data }, ...activities]);
+    setActivities([{ ...data, id: uid() }, ...activities]);
     console.log(activities);
   }
 
