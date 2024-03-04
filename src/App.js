@@ -1,78 +1,22 @@
-import useLocalStorageState from "use-local-storage-state";
-import { useEffect } from "react";
 import "./App.css";
 import Form from "./components/Form/Form.js";
-import List from "./components/List/List.js";
+import useLocalStorageState from "use-local-storage-state";
 import { uid } from "uid";
+import List from "./components/List/List.js";
 
 function App() {
   const [activities, setActivities] = useLocalStorageState("activities", {
-    defaultValue: [
-      { id: "hdz72hdne", name: "Cleanup kitchen", isForGoodWeather: false },
-      { id: "kdei928ndhe", name: "Go for a walk", isForGoodWeather: true },
-    ],
+    defaultValue: [{ id: 2, name: "testName", goodWeather: true }],
   });
-  const [weather, setWeather] = useLocalStorageState("weather", {
-    defaultValue: null,
-  });
-
-  useEffect(() => {
-    async function fetchWeather() {
-      try {
-        const response = await fetch(
-          "https://example-apis.vercel.app/api/weather"
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setWeather(data);
-        } else {
-          console.error("Bad server response");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchWeather();
-    const timer = setInterval(() => {
-      fetchWeather();
-    }, 5000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [setWeather]);
-
-  const filteredActivities = activities.filter(
-    (activity) => activity.isForGoodWeather === weather?.isGoodWeather
-  );
-
-  function handleAddActivity(newActivity) {
-    setActivities([...activities, { id: uid(), ...newActivity }]);
-  }
-
-  function handleDeleteActivity(id) {
-    setActivities(activities.filter((activity) => activity.id !== id));
+  function handleAddActivity(data) {
+    setActivities([{ ...data, id: uid() }, ...activities]);
+    console.log(activities);
   }
 
   return (
-    <div className="app">
-      {weather === null ? (
-        <h1 className="app__heading">Loading weather ...</h1>
-      ) : (
-        <>
-          <h1 className="app__heading">
-            <span>{weather.condition}</span>
-            <span>{weather.temperature} °C</span>
-          </h1>
-          <List
-            activities={filteredActivities}
-            isGoodWeather={weather?.isGoodWeather}
-            onDeleteActivity={handleDeleteActivity}
-          />
-          <Form onAddActivity={handleAddActivity} />
-        </>
-      )}
+    <div className="box">
+      <List activities={activities} />
+      <Form onAddActivity={handleAddActivity} />
     </div>
   );
 }
