@@ -43,6 +43,7 @@ function App() {
         <>
           <h1 className="app-heading">
             <span>{weather.condition}</span>
+            <span>{weather.temperature} °C</span>
           </h1>
           <List
             filteredActivities={filteredActivities}
